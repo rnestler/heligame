@@ -1,6 +1,8 @@
 #ifndef HELI_H
 #define HELI_H
 
+static const int heliRadius = 5;
+
 typedef struct Heli {
 	float x,y;
 	float speed;

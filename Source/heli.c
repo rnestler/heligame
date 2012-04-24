@@ -32,12 +32,12 @@ void heli_update(Heli* heli, float acc, int dtime)
 
 void heli_draw(Heli* heli)
 {
-	DisplayDrawCircle(heli->x, heli->y, 5);
+	DisplayDrawCircle(heli->x+0.5, heli->y+0.5, heliRadius);
 }
 
 void heli_clear(Heli* heli)
 {
-	DisplayClearCircle(heli->x, heli->y, 5);
+	DisplayClearCircle(heli->x+0.5, heli->y+0.5, heliRadius);
 }
 
 float heli_get_y(Heli* heli)
