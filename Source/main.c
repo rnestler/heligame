@@ -34,14 +34,12 @@ int main (void)
 		DelayMs(100);
 
 		heli_clear(&heli);
-
 		if(DIORead(USW0)) {
-			heli_acc(&heli, 0.1);
+			heli_update(&heli, -0.1, 100); // - means up
 		}
 		else {
-			heli_acc(&heli, -0.1);
+			heli_update(&heli, 0.1, 100); // + means down
 		}
-		heli_update(&heli);
 		heli_draw(&heli);
 	} 
 }

@@ -9,9 +9,7 @@ typedef struct Heli {
 
 void heli_init(Heli *heli);
 
-void heli_acc(Heli* heli, float acc);
-
-void heli_update(Heli* heli);
+void heli_update(Heli* heli, float acc, int dtime);
 
 void heli_draw(Heli* heli);
 

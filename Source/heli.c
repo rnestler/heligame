@@ -1,7 +1,7 @@
 #include "heli.h"
 #include "displayNeu.h"
 #include "DIO.h"
-#include "target.h"
+#include "backend.h"
 
 void heli_init(Heli* heli)
 {
@@ -10,19 +10,19 @@ void heli_init(Heli* heli)
 	heli->speed = 0;
 }
 
-void heli_acc(Heli* heli, float acc)
+void heli_update(Heli* heli, float acc, int dtime)
 {
 	heli->speed += acc;
-}
-
-void heli_update(Heli* heli)
-{
 	heli->y += heli->speed;
+
+	// is left right needed?
+	// left
 	if(DIORead(USW1)) {
-		heli->x += 0.5;
+		heli->x -= 1;
 	}
-	if(DIORead(USW2)) {
-		heli->x -= 0.5;
+	// right
+	else if(DIORead(USW2)) {
+		heli->x += 1;
 	}
 
 	// should never happen

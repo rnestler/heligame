@@ -116,6 +116,7 @@ void DisplayClearCircle(int x0, int y0, int radius)
     }
 }
 
+// 1 means pressed
 int DIORead(int io)
 {
 	// ugly hack, check SDL events here
@@ -130,14 +131,5 @@ int DIORead(int io)
 
 	Uint8 *keyState;
 	keyState=SDL_GetKeyState(NULL);
-
-	switch(io) {
-		case USW0:
-			return !keyState[SDLK_w];
-		case USW1:
-			return !keyState[SDLK_a];
-		case USW2:
-			return !keyState[SDLK_d];
-	}
-	return 0;
+	return keyState[io];
 }
