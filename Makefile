@@ -1,7 +1,7 @@
 CC=gcc
 BIN=heligame
 OBJ=Source/main.o Source/heli.o Source/backendPC.o Source/wall.o Source/landscape.o
-LIBS=sdl
+LIBS=sdl SDL_ttf
 CFLAGS = `pkg-config --cflags --libs $(LIBS)` -Wall -IIncludes -DBACKENDPC=1 
 
 

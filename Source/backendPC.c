@@ -1,7 +1,9 @@
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "backend.h"
 
 SDL_Surface *screen = NULL;
+TTF_Font *font = NULL;
 
 void hardwareInit()
 {
@@ -9,8 +11,39 @@ void hardwareInit()
 		exit(1);
 	}
 	atexit(SDL_Quit);
+	if(TTF_Init() < 0) {
+		exit(2);
+	}
+	font = TTF_OpenFont("/usr/share/fonts/TTF/VeraMono.ttf", 8*2);
+	if(!font) {
+		exit(3);
+	}
 	Uint32 flags = SDL_SWSURFACE;
 	screen = SDL_SetVideoMode(160*2, 80*2, 16, flags);
+}
+
+SDL_Surface *drawtext(char text[] )
+{
+	if(!font)
+		return NULL;
+    SDL_Color tmpfontcolor = {0xFF,0xFF,0xFF,0xFF};
+    //SDL_Color tmpfontbgcolor = {0, 0, 0, 0};
+    SDL_Surface *resulting_text;
+ 
+    resulting_text = TTF_RenderText_Solid(font, text, tmpfontcolor);
+ 
+    return resulting_text;
+}
+
+void MIODispWriteText(char text[], int zeile, int spalte)
+{
+	SDL_Surface *surface;
+	surface = drawtext(text);
+	SDL_Rect rect = { spalte, zeile*8*2, 100, 50 };
+	SDL_BlitSurface(surface, NULL, screen, &rect);
+	SDL_FreeSurface(surface);
+	SDL_Delay(100);
+	SDL_UpdateRect(screen, 0, 0, 160*2, 80*2);
 }
 
 void DelayMs (int ms) {

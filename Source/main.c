@@ -22,6 +22,7 @@
 // Funktions-Prototypen
 int initInterrupt(void);
 
+void MIODispWriteText(char text[], int zeile, int spalte);
 
 int main (void)
 {    
@@ -33,6 +34,8 @@ int main (void)
 	initLandscape(&landscape, 70);
 	heli_init(&heli);
 	wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
+
+	MIODispWriteText("test", 2, 2);
    
 	while(1)
 	{
