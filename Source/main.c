@@ -36,7 +36,7 @@ int main (void)
    
 	while(1)
 	{
-		//DelayMs(100);
+		DelayMs(10);
 
 		heli_clear(&heli);
 		if(DIORead(USW0)) {
