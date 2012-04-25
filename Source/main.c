@@ -21,7 +21,6 @@
 // Funktions-Prototypen
 int initInterrupt(void);
 
-unsigned int counter = 0;
 
 int main (void)
 {    

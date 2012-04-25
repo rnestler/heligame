@@ -3,7 +3,16 @@
 #include "DIO.h"
 #include "backend.h"
 
+#ifdef BACKENDPC
 #include <stdio.h>
+
+#define DPRINT(...) printf( __VA_ARGS__)
+
+#else
+
+#define DPRINT
+
+#endif
 
 void heli_init(Heli* heli)
 {
@@ -61,17 +70,17 @@ int heli_check_collision(Heli *heli, float x1, float y1, float x2, float y2)
 	float diffy = heli->y - y1;
 	
 	float a = dirx*diffy - diry*diffx;
-	a = a*a;
 	float r = dirx*dirx + diry*diry;
+	a = a*a;
 
-	printf("%f\n", a/r-heliRadius);
+	DPRINT("%f\n", a/r-heliRadius);
 
 	if(a/r-heliRadius<=1) {
 		// check if out of range
-		if(heli->x-heliRadius > max(x1,x2)){ printf("xbig\n"); return 0;}
-		if(heli->y-heliRadius > max(y1,y2)){ printf("xsmall\n"); return 0;}
-		if(heli->x+heliRadius < min(x1,x2)){ printf("ybig\n"); return 0;}
-		if(heli->y+heliRadius < min(y1,y2)){ printf("ysmall\n"); return 0;}
+		if(heli->x-heliRadius > max(x1,x2)){ DPRINT("xbig\n"); return 0;}
+		if(heli->y-heliRadius > max(y1,y2)){ DPRINT("xsmall\n"); return 0;}
+		if(heli->x+heliRadius < min(x1,x2)){ DPRINT("ybig\n"); return 0;}
+		if(heli->y+heliRadius < min(y1,y2)){ DPRINT("ysmall\n"); return 0;}
 		return 1;
 	}
 

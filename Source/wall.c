@@ -13,8 +13,9 @@ void wall_update(Wall *wall, int dtime)
 	wall->x-=1;
 
 	if(wall->x<=0) {
+		int length;
 		wall->x=160;
-		int length = wall->y2-wall->y1+1;
+		length = wall->y2-wall->y1+1;
 		wall->y1=rand()%80;
 		wall->y2=wall->y1+length;
 	}
