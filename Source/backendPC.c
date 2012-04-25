@@ -1,5 +1,5 @@
 #include <SDL/SDL.h>
-#include "target.h"
+#include "backend.h"
 
 SDL_Surface *screen = NULL;
 
@@ -21,7 +21,7 @@ int DisplaySetPoint (int x, int y)
 {
 	SDL_Rect rect;
 	rect.x = 2*x;
-	rect.y = 2*y;
+	rect.y = 2*(80-y);
 	rect.w = 2;
 	rect.h = 2;
 	return SDL_FillRect(screen,
@@ -33,7 +33,7 @@ int DisplayClrPoint (int x, int y)
 {
 	SDL_Rect rect;
 	rect.x = 2*x;
-	rect.y = 2*y;
+	rect.y = 2*(80-y);
 	rect.w = 2;
 	rect.h = 2;
 	return SDL_FillRect(screen,

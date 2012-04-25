@@ -40,11 +40,11 @@ int main (void)
 
 		heli_clear(&heli);
 		if(DIORead(USW0)) {
-			//printf("up\n");
+			DPRINT("up\n");
 			heli_update(&heli, 0.1, 100); // - means up
 		}
 		else {
-			//printf("down\n");
+			DPRINT("down\n");
 			heli_update(&heli, -0.1, 100); // + means down
 		}
 		landscapeFlow(&landscape, 70);

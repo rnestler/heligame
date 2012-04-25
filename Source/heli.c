@@ -5,13 +5,6 @@
 
 #ifdef BACKENDPC
 #include <stdio.h>
-
-#define DPRINT(...) printf(...)
-
-#else
-
-#define DPRINT
-
 #endif
 
 void heli_init(Heli* heli)
