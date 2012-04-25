@@ -3,6 +3,8 @@
 #include "DIO.h"
 #include "backend.h"
 
+#include <stdio.h>
+
 void heli_init(Heli* heli)
 {
 	heli->y = 40;
@@ -43,5 +45,36 @@ void heli_clear(Heli* heli)
 float heli_get_y(Heli* heli)
 {
 	return heli->y;
+}
+
+#define max(a,b) (a>b? a : b)
+#define min(a,b) (a<b? a : b)
+// checks collision between heli and a line from (x1,y1) to (x2,y2)
+int heli_check_collision(Heli *heli, float x1, float y1, float x2, float y2)
+{
+//		|(a-p)x r|
+//	d = ----------
+//			|r|
+	float dirx = x2-x1;
+	float diry = y2-y1;
+	float diffx = heli->x - x1;
+	float diffy = heli->y - y1;
+	
+	float a = dirx*diffy - diry*diffx;
+	a = a*a;
+	float r = dirx*dirx + diry*diry;
+
+	printf("%f\n", a/r-heliRadius);
+
+	if(a/r-heliRadius<=1) {
+		// check if out of range
+		if(heli->x-heliRadius > max(x1,x2)){ printf("xbig\n"); return 0;}
+		if(heli->y-heliRadius > max(y1,y2)){ printf("xsmall\n"); return 0;}
+		if(heli->x+heliRadius < min(x1,x2)){ printf("ybig\n"); return 0;}
+		if(heli->y+heliRadius < min(y1,y2)){ printf("ysmall\n"); return 0;}
+		return 1;
+	}
+
+	return 0;
 }
 

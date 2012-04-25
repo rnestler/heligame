@@ -1,6 +1,6 @@
 CC=gcc
 BIN=heligame
-OBJ=Source/main.o Source/heli.o Source/backendPC.o
+OBJ=Source/main.o Source/heli.o Source/backendPC.o Source/wall.o
 LIBS=sdl
 CFLAGS = `pkg-config --cflags --libs $(LIBS)` -Wall -IIncludes
 

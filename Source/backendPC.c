@@ -116,6 +116,104 @@ void DisplayClearCircle(int x0, int y0, int radius)
     }
 }
 
+void DisplayDrawLine (int x_start, int y_start, int x_end, int y_end)
+{
+	int x, y, temp, delta, delta_x, delta_y;
+
+	delta_x = abs(x_end - x_start);
+	delta_y = abs(y_end - y_start);
+	
+	if (delta_x == 0)
+		for (y = 0; y <= (y_end-y_start); y++)
+			DisplaySetPoint(x_start, y+y_start);
+	else if (delta_y == 0)
+		for(x = 0; x <= (delta_x); x++)
+			DisplaySetPoint(x+x_start, y_start);
+	else if (delta_y / delta_x)  //ist Steigung > 1
+	{
+		if (y_end < y_start)
+		{
+			temp = y_end;
+			y_end = y_start;
+			y_start = temp;
+			temp = x_end;
+			x_end = x_start;
+			x_start = temp;
+		}
+		for(y = 0; y <= (delta_y); y++)
+		{
+			x = x_start + y * (x_end - x_start) / (delta_y);
+			DisplaySetPoint(x, y_start + y);
+		}
+	}
+	else    // ist Steigung < 1
+  {
+		if (x_end < x_start)
+		{
+			temp = x_end;
+			x_end = x_start;
+			x_start = temp;
+			temp = y_end;
+			y_end = y_start;
+			y_start = temp;
+		}
+		for (x = 0; x <= (delta_x); x++)
+		{
+			y = y_start + x * (y_end - y_start) / (delta_x);
+			DisplaySetPoint(x_start + x, y);
+		}
+	}
+}
+
+void DisplayClrLine (int x_start, int y_start, int x_end, int y_end)
+{
+	int x, y, temp, delta, delta_x, delta_y;
+
+	delta_x = abs(x_end - x_start);
+	delta_y = abs(y_end - y_start);
+	
+	if (delta_x == 0)
+		for (y = 0; y <= (y_end-y_start); y++)
+			DisplayClrPoint(x_start, y+y_start);
+	else if (delta_y == 0)
+		for(x = 0; x <= (delta_x); x++)
+			DisplayClrPoint(x + x_start, y_start);
+	else if (delta_y / delta_x)  //ist Steigung > 1
+	{
+		if (y_end < y_start)
+		{
+			temp = y_end;
+			y_end = y_start;
+			y_start = temp;
+			temp = x_end;
+			x_end = x_start;
+			x_start = temp;
+		}
+		for (y = 0; y <= (delta_y); y++)
+		{
+			x = x_start + y * (x_end - x_start) / (delta_y);
+			DisplayClrPoint(x, y_start + y);
+		}
+	}
+	else          // ist Steigung < 1
+	{
+		if (x_end < x_start)
+		{
+			temp = x_end;
+			x_end = x_start;
+			x_start = temp;
+			temp = y_end;
+			y_end = y_start;
+			y_start = temp;		
+	  }
+		for (x = 0; x <= (delta_x); x++)
+		{
+			y = y_start + x * (y_end - y_start) / (delta_x);
+			DisplayClrPoint(x_start + x, y);
+		}
+	}
+}
+
 // 1 means pressed
 int DIORead(int io)
 {

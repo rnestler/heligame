@@ -8,6 +8,7 @@ typedef struct Heli {
 	float speed;
 } Heli;
 
+int heli_check_collision(Heli *heli, float x1, float y1, float x2, float y2);
 
 void heli_init(Heli *heli);
 
