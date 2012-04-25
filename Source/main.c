@@ -32,11 +32,11 @@ int main (void)
 	hardwareInit();
 	initLandscape(&landscape, 70);
 	heli_init(&heli);
-	wall_init(&wall, 10);
+	wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
    
 	while(1)
 	{
-		DelayMs(100);
+		//DelayMs(100);
 
 		heli_clear(&heli);
 		if(DIORead(USW0)) {
@@ -53,15 +53,15 @@ int main (void)
 		wall_update(&wall, 100);
 		if(heli_check_collision(&heli, wall.x, wall.y1, wall.x, wall.y2)) {
 			heli_init(&heli);
-			wall_init(&wall, 10);
+			wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
 		}
 		if(touch(&landscape, heli.x, heli.y+heliRadius)) {
 			heli_init(&heli);
-			wall_init(&wall, 10);
+			wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
 		}
 		if(touch(&landscape, heli.x, heli.y-heliRadius)) {
 			heli_init(&heli);
-			wall_init(&wall, 10);
+			wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
 		}
 
 		wall_draw(&wall);

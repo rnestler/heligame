@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "displayNeu.h"
 
-void wall_init(Wall *wall, int length)
+void wall_init(Wall *wall, int length, int ymax, int ymin)
 {
 	wall->x=160;
-	wall->y1=rand()%80;
+	wall->y1=ymin+(rand()%(ymax-length));
 	wall->y2=wall->y1+length;
 }
 void wall_update(Wall *wall, int dtime)

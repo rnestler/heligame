@@ -63,4 +63,7 @@ void landscapeFlow(Landscape *lndscp, int deltaY);
 */
 int touch (Landscape *lndscp, int pointX, int pointY);
 
+int getYRoof(Landscape *lndscp, int pointX);
+int getYBottom(Landscape *lndscp, int pointX);
+
 #endif //LANDSCAPE_H

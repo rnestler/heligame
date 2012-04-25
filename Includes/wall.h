@@ -6,7 +6,7 @@ typedef struct Wall {
 	float y1, y2;
 } Wall;
 
-void wall_init(Wall *wall, int length);
+void wall_init(Wall *wall, int length, int ymax, int ymin);
 void wall_update(Wall *wall, int dtime);
 void wall_draw(Wall *wall);
 void wall_clear(Wall *wall);

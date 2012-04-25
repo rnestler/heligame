@@ -209,3 +209,35 @@ int touch (Landscape *lndscp, int pointX, int pointY)
   } 
 }
 
+int getYRoof(Landscape *lndscp, int pointX)
+
+{
+  int j = 0;
+  while (1)
+  {
+  j++;
+    if (pointX <= lndscp->xPnts[j])
+    {
+      return lndscp->yRoof[j-1] 
+	         + ((lndscp->yRoof[j] - lndscp->yRoof[j-1])
+			    * (pointX - lndscp->xPnts[j-1])) 
+				/ (lndscp->xPnts[j] - lndscp->xPnts[j-1]);
+    }
+  } 
+}
+
+int getYBottom(Landscape *lndscp, int pointX)
+{
+  int j = 0;
+  while (1)
+  {
+  j++;
+    if (pointX <= lndscp->xPnts[j])
+    {
+      return lndscp->yBottom[j-1] 
+	         + ((lndscp->yBottom[j] - lndscp->yBottom[j-1])
+			    * (pointX - lndscp->xPnts[j-1])) 
+				/ (lndscp->xPnts[j] - lndscp->xPnts[j-1]);
+    }
+  } 
+}
