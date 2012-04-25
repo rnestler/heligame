@@ -30,3 +30,4 @@ void wall_clear(Wall *wall)
 {
 	DisplayClrLine(wall->x,wall->y1,wall->x,wall->y2);
 }
+

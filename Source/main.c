@@ -35,7 +35,10 @@ int main (void)
 	heli_init(&heli);
 	wall_init(&wall, 10, getYRoof(&landscape, 159), getYBottom(&landscape, 159) );
 
-	MIODispWriteText("test", 2, 2);
+	int i;
+	for(i=0; i<10; i++) {
+		MIODispWriteText("testg", i, i);
+	}
    
 	while(1)
 	{

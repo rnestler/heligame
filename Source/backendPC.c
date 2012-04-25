@@ -14,10 +14,12 @@ void hardwareInit()
 	if(TTF_Init() < 0) {
 		exit(2);
 	}
+	atexit(TTF_Quit);
 	font = TTF_OpenFont("/usr/share/fonts/TTF/VeraMono.ttf", 8*2);
 	if(!font) {
 		exit(3);
 	}
+	printf("The font line skip is: %d\n", TTF_FontLineSkip(font));
 	Uint32 flags = SDL_SWSURFACE;
 	screen = SDL_SetVideoMode(160*2, 80*2, 16, flags);
 }
@@ -39,7 +41,7 @@ void MIODispWriteText(char text[], int zeile, int spalte)
 {
 	SDL_Surface *surface;
 	surface = drawtext(text);
-	SDL_Rect rect = { spalte, zeile*8*2, 100, 50 };
+	SDL_Rect rect = { spalte*2*6, zeile*8*2, 100, 50 };
 	SDL_BlitSurface(surface, NULL, screen, &rect);
 	SDL_FreeSurface(surface);
 	SDL_Delay(100);
