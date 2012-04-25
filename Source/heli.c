@@ -6,7 +6,7 @@
 #ifdef BACKENDPC
 #include <stdio.h>
 
-#define DPRINT(...) printf( __VA_ARGS__)
+#define DPRINT(...) printf(...)
 
 #else
 
@@ -75,7 +75,7 @@ int heli_check_collision(Heli *heli, float x1, float y1, float x2, float y2)
 
 	DPRINT("%f\n", a/r-heliRadius);
 
-	if(a/r-heliRadius<=1) {
+	if(a/r<=heliRadius*heliRadius) {
 		// check if out of range
 		if(heli->x-heliRadius > max(x1,x2)){ DPRINT("xbig\n"); return 0;}
 		if(heli->y-heliRadius > max(y1,y2)){ DPRINT("xsmall\n"); return 0;}
