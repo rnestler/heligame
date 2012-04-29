@@ -53,6 +53,18 @@ void DelayMs (int ms)
 	SDL_Delay(ms);
 }
 
+void DisplayClrArea (int x_start, int y_start, int x_end, int y_end)
+{
+	SDL_Rect rect;
+	rect.x = x_start;
+	rect.y = y_start;
+	rect.w = x_end*2;
+	rect.h = y_end*2;
+	SDL_FillRect(screen, &rect, 0x000000);
+	SDL_UpdateRect(screen, 0, 0, 160*2, 80*2);
+}
+
+
 int DisplaySetPoint (int x, int y)
 {
 	SDL_Rect rect;
