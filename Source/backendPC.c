@@ -39,12 +39,12 @@ SDL_Surface *drawtext(char text[] )
 
 void MIODispWriteText(char text[], int zeile, int spalte)
 {
+	SDL_Rect rect = { spalte*2*6, zeile*8*2, strlen(text)*6*2, 8*2 };
+	SDL_FillRect(screen, &rect, 0x000000);
 	SDL_Surface *surface;
 	surface = drawtext(text);
-	SDL_Rect rect = { spalte*2*6, zeile*8*2, 100, 50 };
 	SDL_BlitSurface(surface, NULL, screen, &rect);
 	SDL_FreeSurface(surface);
-	SDL_Delay(100);
 	SDL_UpdateRect(screen, 0, 0, 160*2, 80*2);
 }
 
