@@ -48,7 +48,8 @@ void MIODispWriteText(char text[], int zeile, int spalte)
 	SDL_UpdateRect(screen, 0, 0, 160*2, 80*2);
 }
 
-void DelayMs (int ms) {
+void DelayMs (int ms)
+{
 	SDL_Delay(ms);
 }
 
