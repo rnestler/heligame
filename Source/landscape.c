@@ -14,7 +14,6 @@
 
 #include "landscape.h" 
 
- 
 void initLandscape(Landscape *lndscp, int deltaY)
 {
   int j;
@@ -210,7 +209,6 @@ int touch (Landscape *lndscp, int pointX, int pointY)
 }
 
 int getYRoof(Landscape *lndscp, int pointX)
-
 {
   int j = 0;
   while (1)
