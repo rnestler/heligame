@@ -3,7 +3,7 @@
 
 typedef struct Wall {
 	float x;
-	float y1, y2;
+	int y1, y2;
 } Wall;
 
 void wall_init(Wall *wall, int length, int ymax, int ymin);
