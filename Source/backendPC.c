@@ -166,7 +166,7 @@ void DisplayClearCircle(int x0, int y0, int radius)
 
 void DisplayDrawLine (int x_start, int y_start, int x_end, int y_end)
 {
-	int x, y, temp, delta, delta_x, delta_y;
+	int x, y, temp, delta_x, delta_y;
 
 	delta_x = abs(x_end - x_start);
 	delta_y = abs(y_end - y_start);
@@ -215,7 +215,7 @@ void DisplayDrawLine (int x_start, int y_start, int x_end, int y_end)
 
 void DisplayClrLine (int x_start, int y_start, int x_end, int y_end)
 {
-	int x, y, temp, delta, delta_x, delta_y;
+	int x, y, temp, delta_x, delta_y;
 
 	delta_x = abs(x_end - x_start);
 	delta_y = abs(y_end - y_start);
