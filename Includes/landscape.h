@@ -35,7 +35,7 @@ static const int rangeAdditionalXDistance = 20;
 
 /* Höhe der unteren Eckpunkte in y-Richtung, 
    zufällig zw. 0 und angegebenem Wert */
-static const int rangeYHight = 30; 
+extern int rangeYHight; 
 
 /* zusätzlicher Abstand (zu deltaY) zwischen oberen und unteren Eckpunkten, 
    in y-Richtung, zufällig zw. 0 und angegebenem Wert */
@@ -67,3 +67,4 @@ int getYRoof(Landscape *lndscp, int pointX);
 int getYBottom(Landscape *lndscp, int pointX);
 
 #endif //LANDSCAPE_H
+

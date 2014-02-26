@@ -14,6 +14,8 @@
 
 #include "landscape.h" 
 
+int rangeYHight = 30; 
+
 void initLandscape(Landscape *lndscp, int deltaY)
 {
   int j;

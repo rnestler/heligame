@@ -3,10 +3,6 @@
 #include "DIO.h"
 #include "backend.h"
 
-#ifdef BACKENDPC
-#include <stdio.h>
-#endif
-
 void heli_init(Heli* heli)
 {
 	heli->y = 40;
@@ -16,7 +12,7 @@ void heli_init(Heli* heli)
 
 void heli_update(Heli* heli, float acc, int dtime)
 {
-	heli->speed += acc;
+	heli->speed += acc*dtime;
 	heli->y += heli->speed;
 
 	// is left right needed?
@@ -59,11 +55,11 @@ int heli_check_collision(Heli *heli, float x1, float y1, float x2, float y2)
 //			|r|
 	float dirx = x2-x1;
 	float diry = y2-y1;
-	float diffx = heli->x - x1;
+	float diffx = heli->x - x1; // diff = a-p
 	float diffy = heli->y - y1;
 	
-	float a = dirx*diffy - diry*diffx;
-	float r = dirx*dirx + diry*diry;
+	float a = dirx*diffy - diry*diffx; // |diff x r|²
+	float r = dirx*dirx + diry*diry;   // |r|²
 	a = a*a;
 
 	DPRINT("%f\n", a/r-heliRadius);

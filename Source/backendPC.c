@@ -15,7 +15,7 @@ void hardwareInit()
 		exit(2);
 	}
 	atexit(TTF_Quit);
-	font = TTF_OpenFont("/usr/share/fonts/TTF/VeraMono.ttf", 8*2);
+	font = TTF_OpenFont("/usr/share/fonts/TTF/DejaVuSansMono.ttf", 8*2);
 	if(!font) {
 		exit(3);
 	}
