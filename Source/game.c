@@ -16,7 +16,9 @@ typedef enum GameState {
 typedef enum GameEvent {
 	EEventEntry,
 	EEventExit,
-	EEventRun
+	EEventRun,
+	EEventKeyDown,
+	EEventKeyUp
 }GameEvent;
 
 struct Game {
@@ -31,6 +33,10 @@ struct Game {
 	Uint32 oldTime;
 	Uint32 difficultyTimer;
 
+	int keyState[4];
+	int keys[4];
+	int currentKey;
+
 	unsigned highscore[N_HIGHSCORE];
 };
 
@@ -38,6 +44,7 @@ void change_state(Game *game, GameState new);
 
 void game_state_menu(Game *game, GameEvent event)
 {
+	static const unsigned nitem=2;
 	if(event == EEventEntry) {
 		DisplayClrArea (0, 0, 160, 80);
 		MIODispWriteText("> Start",1,1);
@@ -46,36 +53,33 @@ void game_state_menu(Game *game, GameEvent event)
 		return;
 	} else if(event == EEventExit) {
 		return;
-	} else if(event == EEventRun) {
-		static const unsigned nitem=2;
-		static int old=0;
-		switch(game->menuitem) {
-			case 1:
-				if(DIORead(USW0)) {
-					change_state(game, EStateGame);
+	} else if(event == EEventKeyDown) {
+		switch(game->currentKey) {
+			case USW0:
+				switch(game->menuitem) {
+					case 1:
+						change_state(game, EStateGame);
+						break;
+					case 2:
+						change_state(game, EStateHighScore);
+						break;
 				}
 				break;
-			case 2:
-				if(DIORead(USW0)) {
-					change_state(game, EStateHighScore);
-				}
+			case USW1:
+				MIODispWriteText(" ",game->menuitem,1);
+				game->menuitem = (game->menuitem%nitem)+1;
+				MIODispWriteText(">",game->menuitem,1);
 				break;
-			default:
-				game->menuitem = 1;
-		}
-		int new = DIORead(USW1);
-		if(new && old==0) {
-			MIODispWriteText(" ",game->menuitem,1);
-			game->menuitem = (game->menuitem%nitem)+1;
-			MIODispWriteText(">",game->menuitem,1);
-		}
-		old = new;
+		} 
+	}
+	else if(event == EEventRun) {
 	}
 }
 
 void game_state_game(Game *game, GameEvent event)
 {
 	if(event == EEventEntry) {
+		DPRINT("game entry\n");
 		rangeYHight = 1;
 		DisplayClrArea (0, 0, 160, 80);
 		initLandscape(&game->landscape, 70);
@@ -86,12 +90,20 @@ void game_state_game(Game *game, GameEvent event)
 		game->startTicks = SDL_GetTicks();
 		game->oldTime = game->startTicks;
 		game->difficultyTimer = game->startTicks;
-		return;
-	} 
-	if(event == EEventExit) {
-		return;
-	}
-	if(event == EEventRun) {
+	} else if(event == EEventExit) {
+		Uint32 time = SDL_GetTicks();
+		Uint32 score = (time-game->startTicks)/100;
+		DPRINT("Score: %i\n", score);
+		for(unsigned i=0; i<N_HIGHSCORE; ++i) {
+			if(score > game->highscore[i]) {
+				for(unsigned j=N_HIGHSCORE-1; j>i; --j) {
+					game->highscore[j] = game->highscore[j-1];
+				}
+				game->highscore[i] = score;
+				break;
+			}
+		}
+	} else if(event == EEventRun) {
 		Uint32 time = SDL_GetTicks();
 		Uint32 diffTime = time-game->oldTime;
 		game->oldTime=time;
@@ -150,27 +162,18 @@ void game_state_game(Game *game, GameEvent event)
 void game_state_highscore(Game *game, GameEvent event)
 {
 	if(event == EEventEntry) {
-		Uint32 time = SDL_GetTicks();
-		Uint32 score = time-game->startTicks;
 		char buf[10];
-		int found = 0;
 		for(unsigned i=0; i<N_HIGHSCORE; ++i) {
-			if(score > game->highscore[i] && found==0) {
-				game->highscore[i] = score;
-				found = 1;
-				sprintf(buf, ">%i. %4i", i+1, score);
-			}
-			else {
-				sprintf(buf, " %i. %4i", i+1, game->highscore[i]);
-			}
+			sprintf(buf, "%2u. %4i", i+1, game->highscore[i]);
 			MIODispWriteText(buf, i, 0);
 		}
 	} else if(event == EEventExit) {
-	}
-	else if(event == EEventRun) {
-		if(DIORead(USW0)) {
+	} else if(event == EEventKeyDown) {
+		if(game->currentKey == USW0) {
 			change_state(game, EStateMenu);
 		}
+	}
+	else if(event == EEventRun) {
 	}
 }
 
@@ -215,23 +218,56 @@ Game* game_init()
 	for(unsigned i=0; i< N_HIGHSCORE; ++i) {
 		game->highscore[i] = 0;
 	}
+	for(unsigned i=0; i<4; ++i) {
+		game->keyState[i] = 0;
+	}
+	game->keys[0] = USW0;
+	game->keys[1] = USW1;
+	game->keys[2] = USW2;
+	game->keys[3] = USW3;
+	game->menuitem = 0;
+	game->scapeSize = 0;
+	game->startTicks = 0;
+	game->oldTime = 0;
+	game->difficultyTimer = 0;
+	
 	game->state = EStateMenu;
 	game_state_menu(game, EEventEntry);
+
 	return game;
 }
 
 void game_run(Game *game)
 {
+	GameEvent event = EEventRun;
+	
 	DelayMs(10);
+
+	// check for key events
+	for(unsigned i=0; i<4; ++i) {
+		int state = DIORead(game->keys[i]);
+		if(state && game->keyState[i]==0) {
+			event = EEventKeyDown;
+			game->currentKey = game->keys[i];
+			game->keyState[i] = state;
+			break;
+		} else if(state == 0 && game->keyState[i]) {
+			event = EEventKeyUp;
+			game->currentKey = game->keys[i];
+			game->keyState[i] = state;
+			break;
+		}
+	}
+
 	switch(game->state) {
 		case EStateMenu:
-			game_state_menu(game, EEventRun);
+			game_state_menu(game, event);
 			break;
 		case EStateGame:
-			game_state_game(game, EEventRun);
+			game_state_game(game, event);
 			break;
 		case EStateHighScore:
-			game_state_highscore(game, EEventRun);
+			game_state_highscore(game, event);
 			break;
 		default:
 			exit(-1);
